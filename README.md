@@ -78,9 +78,33 @@ the provider binary in the `$GOPATH/bin` directory.
 
 To generate or update documentation, run `go generate`.
 
-In order to run the full suite of Acceptance tests, run `make testacc`.
+## Testing the Provider
 
-_Note:_ Acceptance tests create real resources, and often cost money to run.
+In order to test the provider, you need a running instance of the API server.
+This can be set up with docker compose:
+
+```sh
+cd docker_compose && docker-compose up -d
+```
+
+To ensure the API is up and running, you can run the following command:
+
+```sh
+curl localhost:19090/health/readyz
+```
+
+To authenticate with the API, you need to sign up as a user and export the
+resulting token:
+
+```sh
+curl -X POST localhost:19090/signup -d '{"username":"education", "password":"test123"}'
+```
+
+```sh
+export HASHICUPS_TOKEN=ey...
+```
+
+Now you are ready to run the full suite of Acceptance tests:
 
 ```shell
 make testacc
